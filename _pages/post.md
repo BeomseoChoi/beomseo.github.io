@@ -11,4 +11,4 @@ permalink: /posts/
             <p>{{ post.date | date: '%B %d, %Y' }}</p>
         </li>
     {% endfor %}
-<ul>
+</ul>
