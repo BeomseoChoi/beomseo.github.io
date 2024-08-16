@@ -24,18 +24,4 @@ document.addEventListener('DOMContentLoaded', function() {
         tab.addEventListener('click', handleTabClick);
     });
 
-    // 초기 로드 시 /home으로 리디렉션
-    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        history.replaceState(null, null, '/home');
-        loadContent('/pages/home/home.html');
-        console.log("init");
-    }
-
-    // 브라우저 뒤로가기/앞으로가기 버튼을 눌렀을 때 페이지 로드
-    window.addEventListener('popstate', function() {
-        const currentTab = Array.from(navs).find(tab => tab.getAttribute('href') === window.location.pathname);
-        if (currentTab) {
-            loadContent(currentTab.getAttribute('data-tab'));
-        }
-    });
 });
