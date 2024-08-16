@@ -1,9 +1,27 @@
-<!doctype html>
-<html>
-  <head>
-    <title>This is the title of the webpage!</title>
-  </head>
-  <body>
-    <p>This is an example paragraph. Anything in the <strong>body</strong> tag will appear on the page, just like this <strong>p</strong> tag and its contents.</p>
-  </body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/home" class="nav-link" data-tab="/pages/home/home.html">홈</a></li>
+                <li><a href="/tab1" class="nav-link" data-tab="/pages/tab1.html">탭 1</a></li>
+                <li><a href="/tab2" class="nav-link" data-tab="/pages/tab2.html">탭 2</a></li>
+                <li><a href="/tab3" class="nav-link" data-tab="/pages/tab3.html">탭 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="content">
+        <!-- 콘텐츠가 여기에 로드됩니다 -->
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
 </html>
