@@ -6,17 +6,17 @@
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
 <body>
+  <div class="container">
     <nav class="navbar">
-        <ul class="navbar_menu">
-            <li><a href="{{ '/' | relative_url }}">Home</a></li>
-            <li><a href="{{ '/about' | relative_url }}">about</a></li>
-            <li><a href="{{ '/post' | relative_url }}">post</a></li>
-        </ul>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
+        <li><a class="nav-link" href="{{ '/about' | relative_url }}">About</a></li>
+        <li><a class="nav-link" href="{{ '/post' | relative_url }}">Post</a></li>
+      </ul>
     </nav>
-  <header>
-  </header>
-  <main>
-    {{ content }}
-  </main>
+    <main>
+      <!-- {{ content }} -->
+    </main>
+  </div>
 </body>
 </html>

@@ -1,7 +1,38 @@
+html, body {
+  height: 100%; /* 전체 페이지 높이 사용 */
+  margin: 0; /* 기본 마진 제거 */
+  display: flex; /* Flexbox 레이아웃 활성화 */
+  justify-content: center; /* 수평 중앙 정렬 */
+}
+
+.container {
+  width: 1000px; /* 콘텐츠의 너비 설정 */
+  padding: 20px; /* 내부 여백 추가 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  background-color: #fff; /* 배경색 추가 (선택 사항) */
+}
+
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--background-color);
-    padding: 8px 12px;
-  }
+  background-color: #333;
+  width: 100%; /* 네비게이션 바가 전체 너비를 차지하도록 설정 */
+  padding: 10px;
+  box-sizing: border-box; /* 패딩을 포함하여 전체 너비를 계산 */
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* 네비게이션 항목을 수평으로 정렬 */
+  justify-content: space-around; /* 네비게이션 항목을 중앙에 정렬 */
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 15px; /* 링크 간의 간격 설정 */
+}
+
+.nav-link:hover {
+  color: #ff0; /* 링크에 마우스를 올렸을 때 색상 변경 */
+}
