@@ -1,1 +1,0 @@
-# beomseo.github.io
