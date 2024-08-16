@@ -28,16 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
         history.replaceState(null, null, '/home');
         loadContent('/pages/home/home.html');
-    } else {
-        console.log("refresh")
-        // 새로고침 시 현재 경로에 해당하는 페이지를 로드
-        const currentTab = Array.from(navs).find(tab => tab.getAttribute('href') === window.location.pathname);
-        console.log("currentTab:", currentTab)
-        if (currentTab) {
-            const temp = currentTab.getAttribute('data-tab')
-            console.log("data-tab:", temp)
-            loadContent(temp);
-        }
+        console.log("init");
     }
 
     // 브라우저 뒤로가기/앞으로가기 버튼을 눌렀을 때 페이지 로드
