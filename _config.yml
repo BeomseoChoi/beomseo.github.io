@@ -33,6 +33,11 @@ github_username:  BeomseoChoi
 # theme: minima
 plugins:
   - jekyll-feed
+  
+collections:
+  pages:
+    output: true
+    permalink: /:path/
 
 # Exclude from processing.
 # The following items will not be processed, by default.
