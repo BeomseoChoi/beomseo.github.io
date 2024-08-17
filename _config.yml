@@ -29,10 +29,12 @@ url: "https://blog.beomseo.com" # the base hostname & protocol for your site, e.
 twitter_username: jekyllrb
 github_username:  BeomseoChoi
 
+
 # Build settings
 # theme: minima
 plugins:
   - jekyll-feed
+markdown: kramdown
 highlighter: rouge
   
 collections:

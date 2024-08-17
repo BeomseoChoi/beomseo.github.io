@@ -22,9 +22,7 @@ function setActiveNavLink() {
 
     navLinks.forEach(navLink => {
         const linkPath = getPathNameByIndex(new URL(navLink.href).pathname, 0);
-        console.log(currentPath, linkPath);
         if (linkPath === currentPath) {
-            console.log(linkPath);
             navLink.classList.add("active");
         }
     });
