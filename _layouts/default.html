@@ -5,20 +5,22 @@
   <title>{{ page.title }}</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=IBM+Plex+Sans:wght@400;700&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/font.css' | relative_url }}">
 </head>
 <body>
-  <div class="container">
-    <nav class="navbar">
-      <ul class="nav-list">
-        <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
-        <li><a class="nav-link" href="{{ '/about' | relative_url }}">About</a></li>
-        <li><a class="nav-link" href="{{ '/posts' | relative_url }}">Posts</a></li>
-
-      </ul>
-    </nav>
-    <main>
-      {{ content }}
-    </main>
+  <div class="wrapper font-default font-weight-normal">
+    <div class="container">
+      <nav class="navbar">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
+          <li><a class="nav-link" href="{{ '/about' | relative_url }}">About</a></li>
+          <li><a class="nav-link" href="{{ '/posts' | relative_url }}">Posts</a></li>
+        </ul>
+      </nav>
+      <main>
+        {{ content }}
+      </main>
+    </div>
   </div>
 </body>
 </html>
