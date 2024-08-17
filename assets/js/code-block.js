@@ -1,12 +1,15 @@
 // Add copy button above code blocks.
 document.addEventListener("DOMContentLoaded", function(){
-    const codeBlocks = document.querySelectorAll("[class^='language-']");
+    const codeBlocks = document.querySelectorAll("div[class^='language-']");
     console.log(codeBlocks)
     codeBlocks.forEach(codeBlock =>{
         const contentBtnCopy = "Copy";
         const contentBtnCopyClicked = "Copied!";
 
-        const preElement = codeBlock.parentElement;
+        // code container
+        const codeContainer = document.createElement("div");
+        codeContainer.className = "code-container";
+        codeBlock.parentElement.insertBefore(codeContainer, codeBlock)
 
         // code header container
         const codeLanguage = document.createElement("span");
@@ -31,18 +34,9 @@ document.addEventListener("DOMContentLoaded", function(){
         codeBlockContainer.className = "code-block-container";
         codeBlockContainer.appendChild(codeBlock);
 
-        // code container
-        const codeContainer = document.createElement("div");
-        codeContainer.className = "code-container";
+        // append header and code block to code container
         codeContainer.appendChild(codeHeaderContainer)
         codeContainer.appendChild(codeBlockContainer)
-
-        // insert code container
-        preElement.appendChild(codeContainer);
-
-
-        // div(상단바) div(복사버튼) span button
-        // div code
 
         btnCopy.addEventListener("click", function(){
             const code = codeBlock.textContent;

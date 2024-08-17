@@ -2,9 +2,9 @@
 layout: default
 title:  "Nvidia Driver Installation"
 date:   2024-08-16 21:22:53 +0900
-categories: jekyll update
+categories: post
 ---
-# Nvidia Driver Installation
+{% include post-header.html %}
 
 Check your GPUs
 ```
