@@ -2,7 +2,7 @@
 layout: default
 title:  "Nvidia Driver Installation"
 date:   2024-08-16 21:22:53 +0900
-categories: post
+categories: posts
 ---
 {% include post-header.html %}
 

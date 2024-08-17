@@ -15,12 +15,13 @@ function inactiveNavLinks(){
         navLink.classList.remove("active");
     }
 }
+
 function setActiveNavLink() {
     const navLinks = document.querySelectorAll(".nav-link");
-    const currentPath = normalizePath(window.location.pathname);
+    const currentPath = getPathNameByIndex(window.location.pathname, 0);
 
     navLinks.forEach(navLink => {
-        const linkPath = normalizePath(new URL(navLink.href).pathname);
+        const linkPath = getPathNameByIndex(new URL(navLink.href).pathname, 0);
         console.log(currentPath, linkPath);
         if (linkPath === currentPath) {
             console.log(linkPath);
@@ -29,7 +30,7 @@ function setActiveNavLink() {
     });
 }
 
-// 마지막 슬래시를 제거하는 함수
-function normalizePath(path) {
-    return path.endsWith('/') ? path.slice(0, -1) : path;
+function getPathNameByIndex(path, index) {
+    const parts = path.split('/').filter(part => part !== "");
+    return parts.length > 0 ? parts[index] : "";
 }
