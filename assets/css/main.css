@@ -45,6 +45,31 @@
   margin-right: 15px; /* 링크 간의 간격 설정 */
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
+.code-header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .nav-link:hover {
   color: #ff0; /* 링크에 마우스를 올렸을 때 색상 변경 */
+}
+.code-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.btn-copy {
+  display: block;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: right;
 }
