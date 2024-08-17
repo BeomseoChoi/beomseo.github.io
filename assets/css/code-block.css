@@ -1,0 +1,33 @@
+
+.code-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #967bb6;
+    padding: 5px 10px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.code-block-container {
+    padding: 0px 10px;
+    border: 2px solid #967bb6
+}
+
+.code-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.code-header-lang {
+    color: white;
+    font-size: small;
+}
+
+.btn-copy {
+    font-size: small;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    color: white; /* 글자 색상을 흰색으로 설정 */
+    cursor: pointer;
+  }

@@ -33,6 +33,7 @@ github_username:  BeomseoChoi
 # theme: minima
 plugins:
   - jekyll-feed
+highlighter: rouge
   
 collections:
   pages:

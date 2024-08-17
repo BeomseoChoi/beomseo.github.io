@@ -7,7 +7,7 @@ categories: jekyll update
 # Nvidia Driver Installation
 
 Check your GPUs
-```code
+```
 lshw -C display
 ```
 ```c++
@@ -16,7 +16,6 @@ lshw -C display
 int main(){
     std::printf("hello, world!\n");
 }
-
 ```
 
 
