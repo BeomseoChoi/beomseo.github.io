@@ -6,42 +6,58 @@ categories: posts
 ---
 {% include post-header.html %}
 
-Logistic regression이란 베르누이 분포를 따르는 종속변수를 예측하는 확률적 판별 모델(discriminative model)입니다. 입력 변수를 선형 변환하여 logit 값을 예측하고 시그모이드(sigmoid) 함수를 통과시켜 관심 있는 사건의 확률을 얻을 수 있습니다. 여기서 logit이란 관심있는 사건의 상대적 비율인 odds ratio에 log를 씌운 값입니다. 비가 올 확률이 75%, 비가 오지 않을 확률이 25%라면 3:1로 odds ratio는 3입니다.
+## Overview
+Logistic regression이란 **베르누이 분포를 따르는 종속변수를 예측하는 확률적 판별 모델(discriminative model)**입니다. 추론 과정은 선형 변환과 시그모이드 함수로 구성됩니다. 선형 변환의 출력 변수는 logit[^1]입니다.
 
-logit을 예측하는 이유는 선형 변환 후 종속변수 값의 범위가 실수 전체 범위이기 때문에, 결과 값을 확률로 해석할 수 없기 때문입니다. logit 함수는 $\mathbb{R} \rightarrow [0, 1]$인 함수이며 역함수가 존재하고, logit 함수의 역함수를 시그모이드 함수라고 부릅니다. 따라서 실수 전체 범위를 갖는 logit 값을 선형 변환으로 예측하고 시그모이드 함수를 통과시켜 관심있는 사건의 확률을 구합니다.
+Logit이란 관심있는 사건의 상대적 비율인 odds ratio에 log를 씌운 값입니다. 예를 들어, 비가 올 확률이 75%, 비가 오지 않을 확률이 25%입니다. 비가 올 확률에 관심이 있다면 odds ratio는 3:1로 3입니다.
 
+Logit transform은 관심있는 사건의 확률을 logit으로 변환합니다($L : [0, 1] \rightarrow \mathbb{R}$). Logit transform은 연속함수이고 역함수가 존재합니다. 시그모이드 함수는 logit transform의 역함수입니다.
 
-
-
+따라서 logistic regression은 **선형 변환으로 logit을 예측하고 시그모이드 함수를 사용하여 확률로 해석하는 모델**이라고 말할 수 있습니다.
 
 $$
-\text{Odds ratio} = O(x) = \frac{x}{1-x}
+\text{Odds ratio} = O(x) = \frac{x}{1-x} , \text{where }0 \le x \le 1.
 $$
-
 
 $$
 O(x) = 
 \begin{cases}
 0, & \text{if } x = 0 \\
 1, & \text{if } x = 0.5 \\ 
-\inf, & \text{if } x = 1 
+\infty, & \text{if } x = 1 
 \end{cases}
-\text{, where } 0 \le x \le 1.
 $$
 
 $$
-\text{Log-odds (Logit)} = \ln O(x) = \ln \frac{x}{1-x} 
+\text{Logit(Log-odds)} = L(x) = \ln O(x) = \ln \frac{x}{1-x} 
 $$
 
 $$
 L(x) = 
 \begin{cases}
--\inf, & \text{if } x = 0 \\
+-\infty, & \text{if } x = 0 \\
 0, & \text{if } x = 0.5 \\
-\inf, & \text{if } x = 1
+\infty, & \text{if } x = 1
 \end{cases}
-\text{, where } 0 \le x \le 1.
 $$
+
+---
+## Model fitting
+확률을 estimate하는데, 확률의 확률 분포를 알면 그냥 그 확률 분포를 쓰겠지. 로지스틱 회귀를 확률 예측에 사용한다면 모수가 관심있는 사건의 확률임. 
+
+https://www.quora.com/Why-do-we-use-the-maximum-likelihood-estimation-in-logistic-regression
+### Estimation
+
+
+### Evaluation
+
+
+
+
+
+
+
+
 
 ---
 
@@ -93,3 +109,13 @@ p = f(WX + b).
 $$
 
 We call the non-linear function $f(x)$ `Sigmoid function`, and the process of finding $x$ is known as `Logistic regression`.
+
+
+---
+
+[^1]: 선형 변환으로 logit을 예측하는 이유는 선형 변환 결과를 확률로 해석할 수 없기 때문입니다. 선형 변환 후 종속변수 값은 실수 전체 범위($\mathbb{R}$)에 속합니다. 반면 확률은 0과 1 사이 구간에($[0, 1]$) 속합니다. 그래서 선형 변환의 결과를 확률로 해석할 수 없습니다.
+
+
+---
+## References
+https://www.cs.cmu.edu/~aarti/Class/10701_Spring23/Lecs/Lecture4_inked.pdf
