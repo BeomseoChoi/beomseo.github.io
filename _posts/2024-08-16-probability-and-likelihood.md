@@ -33,12 +33,38 @@ $$
 P(X=x)
 $$
 
+### 확률분포의 특성치
+#### 평균
+
+$$
+\displaylines
+{
+E[x] = \sum_{x}{xf(x)}\\
+E[x] = \int_{-\infty}^{\infty}{xf(x)dx}
+}
+$$
+
+#### 분산[^2], 표준편차
+
+$$
+\displaylines
+{
+Var(x) = \sum_{x}(x-\mu)^{2}f(x)\\
+Var(x) = \int_{-\infty}^{\infty}{(x-\mu)^{2}f(x)dx}\\
+Sd(x) = \sqrt{Var(x)}
+}
+$$
+
+
+
 {% include image.html 
 path="/resources/distribution.png"
 max-width="80%"
 %}
 
 [^1]: 사건들의 집합을 sigma field of events라고 한다. sigma field는 다음 조건을 만족한다. 1. 전체 집합을 포함한다. 2. 여집합에 닫혀있다. 3. 가산무한번 합집합에 닫혀있다.
+
+[^2]: $Var(x) = E[(x-\mu)^{2}f(x)] = E(x^{2}) - E(x)^{2}$
 
 ## References
 [1] https://gem763.github.io/probability%20theory/%ED%99%95%EB%A5%A0%EC%9D%98-%EC%9D%B4%ED%95%B4.html<br>
