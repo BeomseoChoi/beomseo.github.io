@@ -29,20 +29,20 @@ code="
         \INPUT {\\
             $E \text{: Embedding tensor} \in \mathbb{R}^{N \times L \times D }$ \\
             $H \text{: Number of heads} \in \mathbb{N}$ \\
-            $mask \text{: Masking tensor}$ \\
+            $padding\_mask \text{: Padding mask} \in \mathbb{R}^{N \times 1 \times 1 \times L }$ \\
             $N \text{: Number of encoder blocks}$
         }
         \OUTPUT {\\
-            $S \text{: Some Output}$\\
+            $encoder\_out \text{: Encoder output}$\\
         }
         \\
         \STATE $E = E + \text{PositionalEncoding}()$
-        \STATE $out = \text{EncoderBlock}(E, H, mask)$
+        \STATE $encoder\_out = \text{EncoderBlock}(E, H, padding\_mask)$
         \FOR {$N - 1$}
-            \STATE $out = \text{EncoderBlock}(out, H, mask)$
+            \STATE $encoder\_out = \text{EncoderBlock}(encoder\_out, H, padding\_mask)$
         \ENDFOR
 
-        \RETURN $out$
+        \RETURN $encoder\_out$
 
     \end{algorithmic}
     \end{algorithm}
@@ -57,7 +57,7 @@ code="
         \INPUT {\\
             $I \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
             $H \text{: Number of heads} \in \mathbb{N}$ \\
-            $mask \text{: Masking tensor}$ \\
+            $padding\_mask \text{: Padding mask} \in \mathbb{R}^{N \times 1 \times 1 \times L }$ \\
         }
         \OUTPUT {\\
             $S \text{: Some Output}$\\
@@ -65,11 +65,45 @@ code="
         \\
         \STATE $W^{Q}, W^{K}, W^{V}, W^{O} \in \mathbb{R}^{D \times D}$
         \STATE $Q, K, V = IW_{Q}, IW_{K}, IW_{V}$
-        \STATE $heads = \text{MSA}(Q, K, V, H, None)$
-        \STATE $heads = \text{BN}(heads + E)$
+        \STATE $self\_attention = \text{MSA}(Q, K, V, H, padding\_mask)$
+        \STATE $self\_attention = \text{BN}(self\_attention + I)$
         \STATE $encoder\_block\_out = \text{FFN}(heads)$
         \STATE $encoder\_block\_out = \text{BN}(encoder\_block\_out + heads)$
         \RETURN $encoder\_block\_out$
+
+    \end{algorithmic}
+    \end{algorithm}
+" %}
+
+{% include pseudocode.html 
+id="transformer-decoder-block"
+code="
+    \begin{algorithm}
+    \caption{Transformer Decoder Block}
+    \begin{algorithmic}
+        \INPUT {\\
+            $I \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
+            $H \text{: Number of heads} \in \mathbb{N}$ \\
+            $encoder\_out \text{: Number of heads} \in \mathbb{N}$ \\
+            $padding\_mask \text{: Padding mask} \in \mathbb{R}^{N \times 1 \times 1 \times L }$ \\
+            $target\_mask \text{: Target mask} \in \mathbb{R}^{N \times 1 \times L \times L }$ \\
+        }
+        \OUTPUT {\\
+            $S \text{: Some Output}$\\
+        }
+        \\
+        \STATE $W^{Q}, W^{K}, W^{V}, W^{O} \in \mathbb{R}^{D \times D}$
+        \STATE $Q, K, V = IW_{Q}, IW_{K}, IW_{V}$
+        
+        \STATE $self\_attention = \text{MSA}(Q, K, V, H, target\_mask)$
+        \STATE $self\_attention = \text{BN}(self\_attention + E)$
+        
+        \STATE $cross\_attention = \text{MSA}(encoder\_out, encoder\_out, self\_attention, H, padding\_mask)$
+        \STATE $cross\_attention = \text{BN}(cross\_attention + self\_attention)$
+        
+        \STATE $decoder\_out = \text{FFN}(heads)$
+        \STATE $decoder\_out = \text{BN}(encoder\_out + heads)$
+        \RETURN $decoder\_out$
 
     \end{algorithmic}
     \end{algorithm}
@@ -102,11 +136,14 @@ code="
         \mathbb{R}^{N \times H \times D_{h} \times L}$
 
         \STATE $D_{h} = D / H$
-        \STATE $heads = \text{softmax}(QK / \sqrt{D_{h}})V \in \mathbb{R}^{N \times H \times L \times D_{h}}$
 
+        \STATE $scores = QK / \sqrt{D_{h}} \in \mathbb{R}^{N \times H \times L \times L}$
         \IF {$mask$}
-            \STATE $heads = \text{fill}(heads, mask, -\infty)$
+            \STATE $scores = \text{fill}(scores, mask, -\infty)$
         \ENDIF
+
+        \STATE $heads = \text{softmax}(scores)V \in \mathbb{R}^{N \times H \times L \times D_{h}}$
+
 
         \STATE $heads \in \mathbb{R}^{N \times H \times L \times D_{h}}
         \xrightarrow{\text{transpose}}
