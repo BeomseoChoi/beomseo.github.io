@@ -8,18 +8,26 @@
   <link rel="stylesheet" href="{{ '/assets/css/font.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/code-block.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
 
-  <!-- MathJax 3 start -->
   <script>
     MathJax = {
-      tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)'], ['\\[', '\\]']]
-      }
-    };
+        tex: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+        }
+    }
   </script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <!-- MathJax 3 end -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"
+          integrity="sha256-kbAFUDxdHwlYv01zraGjvjNZayxKtdoiJ38bDTFJtaQ="
+          crossorigin="anonymous">
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.js">
+  </script>
 
 </head>
 <body>
@@ -42,6 +50,6 @@
   <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/nav.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/code-block.js' | relative_url }}"></script>
-
+  <script> pseudocode.renderClass("pseudocode"); </script>
 </body>
 </html>

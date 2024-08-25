@@ -42,6 +42,7 @@ $$
 E[x] = \sum_{x}{xf(x)}\\
 E[x] = \int_{-\infty}^{\infty}{xf(x)dx}
 }
+
 $$
 
 #### 분산[^2], 표준편차
