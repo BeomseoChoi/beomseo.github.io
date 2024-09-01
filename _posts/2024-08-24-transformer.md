@@ -55,7 +55,7 @@ code="
     \caption{Transformer Encoder Block}
     \begin{algorithmic}
         \INPUT {\\
-            $I \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
+            $E \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
             $H \text{: Number of heads} \in \mathbb{N}$ \\
             $padding\_mask \text{: Padding mask} \in \mathbb{R}^{N \times 1 \times 1 \times L }$ \\
         }
@@ -64,9 +64,9 @@ code="
         }
         \\
         \STATE $W^{Q}, W^{K}, W^{V}, W^{O} \in \mathbb{R}^{D \times D}$
-        \STATE $Q, K, V = IW_{Q}, IW_{K}, IW_{V}$
+        \STATE $Q, K, V = EW_{Q}, EW_{K}, EW_{V}$
         \STATE $self\_attention = \text{MSA}(Q, K, V, H, padding\_mask)$
-        \STATE $self\_attention = \text{BN}(self\_attention + I)$
+        \STATE $self\_attention = \text{BN}(self\_attention + E)$
         \STATE $encoder\_block\_out = \text{FFN}(heads)$
         \STATE $encoder\_block\_out = \text{BN}(encoder\_block\_out + heads)$
         \RETURN $encoder\_block\_out$
@@ -82,7 +82,7 @@ code="
     \caption{Transformer Decoder Block}
     \begin{algorithmic}
         \INPUT {\\
-            $I \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
+            $E \text{: Input tensor} \in \mathbb{R}^{N \times L \times D }$ \\
             $H \text{: Number of heads} \in \mathbb{N}$ \\
             $encoder\_out \text{: Number of heads} \in \mathbb{N}$ \\
             $padding\_mask \text{: Padding mask} \in \mathbb{R}^{N \times 1 \times 1 \times L }$ \\
@@ -93,7 +93,7 @@ code="
         }
         \\
         \STATE $W^{Q}, W^{K}, W^{V}, W^{O} \in \mathbb{R}^{D \times D}$
-        \STATE $Q, K, V = IW_{Q}, IW_{K}, IW_{V}$
+        \STATE $Q, K, V = EW_{Q}, EW_{K}, EW_{V}$
         
         \STATE $self\_attention = \text{MSA}(Q, K, V, H, target\_mask)$
         \STATE $self\_attention = \text{BN}(self\_attention + E)$
@@ -160,17 +160,55 @@ code="
 
 
 ## Questions
-Transformer 논문을 읽으면서 의아한 부분이 있었다. 다행히도 나만 궁금해한게 아니었고, 인터넷에 동일한 질문과 그에 대한 답변이 올라와 있었다.
+
+### Why use seperate weights on both Q and V?
+
+$$
+scores = \frac{QK^{T}}{\sqrt{D_{h}}} = \frac{EW^{Q}(W^{K})^{T}E^{T}}{\sqrt{D_{h}}}
+$$
+
+$W^{Q}(W^{K})^{T}$를 $W$로 합치면 안되는지 궁금했습니다. 분자의 모양새를 봤을 때 $EWE^{T}$에서 $W$를 factorization한 형태와 같습니다. 왜 factorization을 했는지는 논문에 나와있지 않았습니다. 검색 결과 동일한 질문을 한 사람이 있었고, matrix factorization하면 파라미터 수가 줄어들어 성능상 이점이 있다는 답변을 확인했습니다.[^1] 추가로 $EWE^{T}$ 형태가 bilinear form과 같다는 사실을 알았습니다.[^2]
+
+Matrix factorizaiton $W^{Q}(W^{K})^{T}$ 은 Low Rank Approximation[^3]과 관련이 있습니다.
+
+$$
+\displaylines
+{
+\underset{B \in \mathbb{R}^{d \times k}, C \in \mathbb{R}^{k \times n}}{\text{min}} \parallel A - BC \parallel^{2}_{F},\\
+\text{where } A = U\Sigma V^{T}, BC = U_{k} \Sigma_{k} V_{k}^{T}.
+}
+$$
+
+$B=U_{k}, C=\Sigma_{k}V_{k}^{T}$로 설정하면 matrix factorization 형태가 됩니다. 그 $B=U_{K} \Sigma_{k}, C=V_{k}$로 설정해도 여전히 matrix factorization 입니다. Transformer의 $W^{Q}(W^{K})^{T}$는 최적의 SVD를 찾는 문제로 볼 수 있습니다.
 
 ### Why not concat for the positional encoding?
 
-### Why use seperate weight on both Q and V?
-EWE 대신 EWqWkE를 사용하는 이유는 W는 n by n인 반면 Wq, Wk는 d by d/h 이기 때문에 파라미터가 훨씬 적어 성능이 좋다는 주장이다. 해당 주장은 일리가 있으나, Q와 K를 define한 의도를 설명하지는 못하는 것 같다. 결국 W matrix를 factorization 한 것과 동일한건데... 왜 저자는 처음부터 Q와 K를 정의했을까.
+트랜스포머 QK 전개해서 additivity로 다뤘던 영상도 넣고,
+로컬 정보, 글로벌 정보 관련 내용도 넣자. 
 
-추천시스템... matrix factorization이랑 비슷...?
+
+### 트랜스포머 단점
+[1~3] https://www.quora.com/Which-are-the-weaknesses-of-transformers-in-deep-learning
+한마디로 모델이 무겁다.
+1. quadratic complexity w.r.t. sequence length in self-attention.
+2. large number of parameters -> requiring vast amounts of labeled data, proning to overfitting.
+3. interpretability
+[]
+
+### 트랜스포머 장점
+1. catch global information well <-> bad at catch local information
+모든 쿼리 벡터와 키 벡터를 내적하기 때문에 글로벌 feature를 잘 찾는다. 생각해보면 self-attention만 주구장창 사용한다. global feature를 잘 찾아야만 할 정도로... 반대로 생각하면 local feature는 학습하기 어렵다. 그래서 gaussian dist.를 섞어주는 등 방법으로 local information을 추가하는 연구가 진행되고 있다.
+
+
+
+
+
+
 
 ## Reference
-[1] https://www.reddit.com/r/MachineLearning/comments/cttefo/comment/exs7d08/?utm_source=reddit&utm_medium=web2x&context=3 <br>
-[2] https://stats.stackexchange.com/questions/515477/when-calculating-self-attention-for-transformer-ml-architectures-why-do-we-need
+[^1]: https://stats.stackexchange.com/questions/515477/when-calculating-self-attention-for-transformer-ml-architectures-why-do-we-need
+[^2]: https://187cm.tistory.com/88
+[^3]: [COS 597A Lec. 11 by Matt Weinberg in Princeton University](https://www.cs.princeton.edu/~smattw/Teaching/Fa19Lectures/lec11/lec11.pdf)
+[3] https://www.reddit.com/r/MachineLearning/comments/cttefo/comment/exs7d08/?utm_source=reddit&utm_medium=web2x&context=3 <br>
 https://stats.stackexchange.com/questions/599085/training-transformers-self-attention-weights-vs-embedding-layer?rq=1
 https://www.reddit.com/r/MachineLearning/comments/184m63q/din_transformer_models_why_is_there_a_query_and/
