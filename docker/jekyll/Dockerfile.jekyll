@@ -1,0 +1,36 @@
+FROM ubuntu:22.04
+
+SHELL ["/bin/bash", "-c"]
+WORKDIR "/root"
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Environment variables and aliases.
+COPY docker/jekyll/env.sh /etc/profile.d/env.sh
+COPY docker/jekyll/alias.sh /etc/profile.d/alias.sh
+RUN echo "source /etc/profile.d/env.sh" >> ~/.bashrc && \
+    echo "source /etc/profile.d/alias.sh" >> ~/.bashrc
+
+RUN apt update -y && apt install -y \
+    vim \
+    ruby-full \
+    build-essential \
+    zlib1g-dev \
+    curl \
+    git \
+    tree
+
+RUN echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc && \
+    echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc && \
+    echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc &&\
+    source ~/.bashrc
+
+RUN gem install jekyll bundler
+RUN echo 'export BLOG_HOME="/root/project"' >> ~/.bashrc && \
+    echo '# Start jekyll' >> ~/.bashrc && \
+    source ~/.bashrc && \
+    cd $BLOG_HOME && \
+    if [ -f Gemfile.lock ]; then rm Gemfile.lock; fi
+
+    
+# RUN bundle install && \
+#     bundle exec jekyll serve --host 0.0.0.0 -p 4000
