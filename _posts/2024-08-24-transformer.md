@@ -182,16 +182,6 @@ $$
 
 $B=U_{k}, C=\Sigma_{k}V_{k}^{T}$로 설정하면 matrix factorization 형태가 됩니다. 그 $B=U_{K} \Sigma_{k}, C=V_{k}$로 설정해도 여전히 matrix factorization 입니다. Transformer의 $W^{Q}(W^{K})^{T}$는 최적의 SVD를 찾는 문제로 볼 수 있습니다.
 
-#### Kernel Trick
-또한 kernel function $K(x, z) \triangleq \langle \phi(x), \phi(z) \rangle$으로도 볼 수 있습니다.[^4]
-
-$$
-
-
-
-$$
-
-
 
 ### Why not concat for the positional encoding?
 
