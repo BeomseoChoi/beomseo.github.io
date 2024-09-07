@@ -169,6 +169,7 @@ $$
 
 $W^{Q}(W^{K})^{T}$를 $W$로 합치면 안되는지 궁금했습니다. 분자의 모양새를 봤을 때 $EWE^{T}$에서 $W$를 factorization한 형태와 같습니다. 왜 factorization을 했는지는 논문에 나와있지 않았습니다. 검색 결과 동일한 질문을 한 사람이 있었고, matrix factorization하면 파라미터 수가 줄어들어 성능상 이점이 있다는 답변을 확인했습니다.[^1] 추가로 $EWE^{T}$ 형태가 bilinear form과 같다는 사실을 알았습니다.[^2]
 
+#### Low Rank Approximation and SVD
 Matrix factorizaiton $W^{Q}(W^{K})^{T}$ 은 Low Rank Approximation[^3]과 관련이 있습니다.
 
 $$
@@ -180,6 +181,17 @@ $$
 $$
 
 $B=U_{k}, C=\Sigma_{k}V_{k}^{T}$로 설정하면 matrix factorization 형태가 됩니다. 그 $B=U_{K} \Sigma_{k}, C=V_{k}$로 설정해도 여전히 matrix factorization 입니다. Transformer의 $W^{Q}(W^{K})^{T}$는 최적의 SVD를 찾는 문제로 볼 수 있습니다.
+
+#### Kernel Trick
+또한 kernel function $K(x, z) \triangleq \langle \phi(x), \phi(z) \rangle$으로도 볼 수 있습니다.[^4]
+
+$$
+
+
+
+$$
+
+
 
 ### Why not concat for the positional encoding?
 
@@ -205,10 +217,11 @@ $B=U_{k}, C=\Sigma_{k}V_{k}^{T}$로 설정하면 matrix factorization 형태가 
 
 
 
-## Reference
+---
 [^1]: https://stats.stackexchange.com/questions/515477/when-calculating-self-attention-for-transformer-ml-architectures-why-do-we-need
 [^2]: https://187cm.tistory.com/88
 [^3]: [COS 597A Lec. 11 by Matt Weinberg in Princeton University](https://www.cs.princeton.edu/~smattw/Teaching/Fa19Lectures/lec11/lec11.pdf)
+[^4]: [Kernel trick post](/posts/2024/09/07/kernel-trick.html)
 [3] https://www.reddit.com/r/MachineLearning/comments/cttefo/comment/exs7d08/?utm_source=reddit&utm_medium=web2x&context=3 <br>
 https://stats.stackexchange.com/questions/599085/training-transformers-self-attention-weights-vs-embedding-layer?rq=1
 https://www.reddit.com/r/MachineLearning/comments/184m63q/din_transformer_models_why_is_there_a_query_and/
