@@ -3,7 +3,7 @@
 {
 	"name": "jekyll",
 	"dockerComposeFile": ["../docker/docker-compose.jekyll.yml"],
-	"workspaceFolder": "/root/project",
+	"workspaceFolder": "/home/beomseochoi/project",
 	"service": "service.jekyll",
 	
 	"customizations": {
