@@ -27,6 +27,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # SET WORKING DIR
 ##############################
 WORKDIR /home/$USERNAME
+USER $USERNAME
 
 ##############################
 # SET ENV AND ALIAS TO ~/.BASHRC
@@ -39,7 +40,7 @@ RUN echo "source /etc/profile.d/env.sh" >> ~/.bashrc && \
 ##############################
 # SET PACKAGES
 ##############################
-RUN apt update -y && apt install -y \
+RUN sudo apt update -y && sudo apt install -y \
     vim \
     ruby-full \
     build-essential \
@@ -53,18 +54,16 @@ RUN echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc && \
     echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc &&\
     source ~/.bashrc
 
-RUN gem install jekyll bundler
-RUN echo 'export BLOG_HOME="/root/project"' >> ~/.bashrc && \
+RUN sudo gem install jekyll bundler
+RUN echo 'export BLOG_HOME="/home/beomseochoi/project"' >> ~/.bashrc && \
     echo '# Start jekyll' >> ~/.bashrc && \
     source ~/.bashrc && \
     cd $BLOG_HOME && \
     if [ -f Gemfile.lock ]; then rm Gemfile.lock; fi
 
-    
 RUN git config --global user.name $GITHUB_NAME && \
 git config --global user.email $GITHUB_EMAIL
 
-USER $USERNAME
 
 # RUN bundle install && \
 #     bundle exec jekyll serve --host 0.0.0.0 -p 4000
