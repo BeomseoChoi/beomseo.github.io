@@ -1,0 +1,21 @@
+.font-default{
+    font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+}
+
+.font-weight-thin{
+    font-weight: 100;
+}
+
+.font-weight-normal{
+    font-weight: 400;
+}
+
+.font-weight-bold{
+    font-weight: 700;
+}
+
+.font-weight-heavy{
+    font-weight: 900;
+}
+
+

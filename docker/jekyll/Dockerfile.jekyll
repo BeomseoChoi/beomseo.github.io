@@ -1,0 +1,69 @@
+FROM ubuntu:22.04
+SHELL ["/bin/bash", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+
+##############################
+# SET ARGS
+##############################
+ARG USERNAME=beomseochoi
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+ARG GITHUB_NAME="beomseochoi"
+ARG GITHUB_EMAIL="beomseo0707@gmial.com"
+
+##############################
+# SET USER
+##############################
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+##############################
+# SET WORKING DIR
+##############################
+WORKDIR /home/$USERNAME
+USER $USERNAME
+
+##############################
+# SET ENV AND ALIAS TO ~/.BASHRC
+##############################
+COPY docker/jekyll/env.sh /etc/profile.d/env.sh
+COPY docker/jekyll/alias.sh /etc/profile.d/alias.sh
+RUN echo "source /etc/profile.d/env.sh" >> ~/.bashrc && \
+    echo "source /etc/profile.d/alias.sh" >> ~/.bashrc
+
+##############################
+# SET PACKAGES
+##############################
+RUN sudo apt update -y && sudo apt install -y \
+    vim \
+    ruby-full \
+    build-essential \
+    zlib1g-dev \
+    curl \
+    git \
+    tree
+
+RUN echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc && \
+    echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc && \
+    echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc &&\
+    source ~/.bashrc
+
+RUN sudo gem install jekyll bundler
+RUN echo 'export BLOG_HOME="/home/beomseochoi/project"' >> ~/.bashrc && \
+    echo '# Start jekyll' >> ~/.bashrc && \
+    source ~/.bashrc && \
+    cd $BLOG_HOME && \
+    if [ -f Gemfile.lock ]; then rm Gemfile.lock; fi
+
+RUN git config --global user.name $GITHUB_NAME && \
+git config --global user.email $GITHUB_EMAIL
+
+
+# RUN bundle install && \
+#     bundle exec jekyll serve --host 0.0.0.0 -p 4000

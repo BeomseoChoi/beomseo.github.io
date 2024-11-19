@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=IBM+Plex+Sans:wght@400;700&display=swap">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/font.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/code-block.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+
+  <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+        }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"
+          integrity="sha256-kbAFUDxdHwlYv01zraGjvjNZayxKtdoiJ38bDTFJtaQ="
+          crossorigin="anonymous">
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.js">
+  </script>
+
+</head>
+<body>
+  <div class="wrapper font-default font-weight-normal">
+    <div class="container">
+      <nav class="navbar">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
+          <li><a class="nav-link" href="{{ '/about' | relative_url }}">About</a></li>
+          <li><a class="nav-link" href="{{ '/posts' | relative_url }}">Posts</a></li>
+        </ul>
+        <hr>
+      </nav>
+      <main>
+        {{ content }}
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/nav.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/code-block.js' | relative_url }}"></script>
+  <script> pseudocode.renderClass("pseudocode"); </script>
+</body>
+</html>

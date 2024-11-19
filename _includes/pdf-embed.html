@@ -1,0 +1,121 @@
+<div id="pdfContainer">
+    <div id="header">
+        <span>{{ include.title | default: "PDF"}}</span>
+        <button id="toggleButton" onclick="togglePDF()">Show</button>
+    </div>
+    <embed id="pdfViewer" src="{{ include.src }}" type="application/pdf"/>
+    <div id="dragHandle"></div>
+    <div id="overlay"></div>
+</div>
+
+<script>
+    const pdfContainer = document.getElementById('pdfContainer');
+    const dragHandle = document.getElementById('dragHandle');
+    const overlay = document.getElementById('overlay');
+    let isDragging = false;
+    let isDraggable = false;
+    let curHeight = "50px";
+
+    // 드래그 시작
+    dragHandle.addEventListener('mousedown', function(e) {
+        if (isDraggable) {
+            isDragging = true;
+            overlay.style.display = 'block';  // 오버레이 활성화
+            document.body.style.cursor = 'row-resize';  // 드래그 중 커서 모양 변경
+        }
+    });
+
+    // 마우스 이동 시 높이 조정
+    document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+            const newHeight = e.clientY - pdfContainer.getBoundingClientRect().top;
+            if (newHeight > 100){
+                pdfContainer.style.height = newHeight + 'px';
+                curHeight = pdfContainer.style.height;
+            }
+        }
+    });
+
+    // 드래그 종료
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        overlay.style.display = 'none';  // 오버레이 비활성화
+        document.body.style.cursor = 'default';  // 드래그 종료 시 커서 모양 복원
+    });
+
+    let isPdfVisible = false;
+    function togglePDF() {
+        const pdfContainer = document.getElementById('pdfContainer');
+        const toggleButton = document.getElementById('toggleButton');
+
+        if (!isPdfVisible) {
+            toggleButton.textContent = "Hide";  // 버튼 텍스트 변경
+            if (curHeight == "50px"){
+                pdfContainer.style.height = 500 + 'px';
+                curHeight = pdfContainer.style.height;
+            }
+            else{
+                pdfContainer.style.height = curHeight;
+            }
+        } else {
+            toggleButton.textContent = "Show";  // 버튼 텍스트 변경
+            pdfContainer.style.height = 50 + 'px';
+        }
+        isDraggable = !isDraggable;
+        isPdfVisible = !isPdfVisible;
+    }
+</script>
+<style>
+    #pdfContainer {
+        width: 100%;
+        height: 50px;
+        position: relative;
+        border: 1px solid #ccc;
+    }
+
+    #pdfViewer {
+        width: 100%;
+        height: calc(100% - 50px); /* 헤더 높이를 제외한 PDF 영역 */
+    }
+
+    #header {
+        width: 100%;
+        height: 50px;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ccc;
+    }
+
+    #toggleButton {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    #dragHandle {
+        width: 100%;
+        height: 10px;
+        background-color: #ddd;
+        cursor: row-resize;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);  /* 완전히 투명한 오버레이 */
+            display: none;
+            cursor: row-resize;
+    }
+</style>
